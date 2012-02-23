@@ -1,0 +1,39 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="test_bootstrap.php"
+         cacheTokens="true"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         mapTestClassNameToCoveredClassName="false"
+         printerClass="PHPUnit_TextUI_ResultPrinter"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         strict="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="All Tests Suite">
+            <directory suffix="Test.php">../Test/Cases/</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+       <log type="coverage-html" target="../../../build/coverage" charset="UTF-8"
+           yui="true" highlight="true"
+           lowUpperBound="35" highLowerBound="70" showUncoveredFiles="true" />
+       <log type="coverage-clover" target="../../../build/clover.xml"/>
+       <log type="testdox-html" target="../../../build/testdox.html"/>
+    </logging>
+    <filter>
+        <blacklist>
+            <directory suffix=".php">../Test/Helpers/</directory>
+            <directory suffix=".php">../Test/mockframework/</directory>
+        </blacklist>
+    </filter>
+
+</phpunit>
