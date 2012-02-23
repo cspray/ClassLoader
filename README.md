@@ -20,8 +20,8 @@ project.
 ```php
 <?php
 
-$libsDir = '/whatever/path/to/dir/holding/libs/';
-include $libsDir . 'ClassLoader/Loader.php';
+$libsDir = '/whatever/path/to/dir/holding/libs';
+include $libsDir . '/ClassLoader/Loader.php';
 
 $Loader = new \ClassLoader\Loader();
 $Loader->registerNamespaceDirectory('SprayFire', $libsDir);
