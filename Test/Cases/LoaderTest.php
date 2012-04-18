@@ -53,7 +53,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
     public function testSettingAutoloader() {
         $ClassLoader = new \ClassLoader\Loader();
         $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
-        $ClassLoader->setAutoloader();
+        $this->assertTrue($ClassLoader->setAutoloader());
         $Controller = new \TestApp\Model\TestModel();
         $this->assertInstanceOf('\\TestApp\\Model\\TestModel', $Controller);
     }
