@@ -13,28 +13,59 @@ utilize without needing to actually go in and change the class's namespace.
 Well, first I assume you have some system set in place for your projects to easily
 include third-party libraries.  Stick the repo in whatever directory appropriate
 for your project and then include the ClassLoader object.  Instantiate the object,
-register the directories for your top-level namespaces and set the `ClassLoader::load()`
-method to the `spl_autoload_register()`.  Here's a code example from the [SprayFire](http://github.com/cspray/SprayFire)
-project.
+register the directories for your top-level namespaces and invoke ClassLoader\Loader::setAutoloader().
 
-```php
-<?php
+Here's an example:
 
-$libsDir = '/whatever/path/to/dir/holding/libs';
-include $libsDir . '/ClassLoader/Loader.php';
-
+```
+$libs_dir = '/path/to/your/libs/directory/';
+include $libs_dir . 'ClassLoader/Loader.php';
 $Loader = new \ClassLoader\Loader();
-$Loader->registerNamespaceDirectory('SprayFire', $libsDir);
-\spl_autoload_register(array($Loader, 'load'));
+$Loader->registerNamespaceDirectory('YourNamespace', '/path/to/your/dir/holding/namespace');
+$Loader->setAutoloader();
 
-$PrimaryBootstrap = new \SprayFire\Bootstrap\PrimaryBootstrap();
-// this is converted to: $libsDir . '/SprayFire/Bootstrap/PrimaryBootstrap.php'
+// BAM!  You're good to go with autoloading whatever new classes are needed by
+your scripts.
+
 ```
 
-And that's pretty much it.  Not a lot else needed!  You could register more apps
-if needed.  What's going on is pretty self explanatory but basically we'll look
-for any classes with the `SprayFire` namespace in `$libsDir`.  Any other top level
-namespaces you register would follow the same pattern.
+## Public API
 
-You may retrieve the namespaces and the directories you have them registered to
-by invoking the `getRegisteredNamespaces()` on the ClassLoader object.
+```
+registerNamespaceDirectory($topLevelNamespace, $dir)
+
+- $topLevelNamespace string
+- $dir string No trailing slashes and should be one level above $topLevelNamespace
+- return void
+
+
+getRegisteredNamespaces()
+
+- return array An array of $topLevelNamespaces => $dir as set by registerNamespaceDirectory()
+
+
+load($className)
+
+- $className string
+- return boolean True if successfully included class, false if not
+
+
+setAutoloader()
+
+- return boolean True if ClassLoader\Loader::load was registered as an autoloader, false if not
+
+```
+
+## Changelog
+
+### version 1.0.0
+
+- Initial version, support for registering a top level namespace, getting registered
+namespaces and loading a class via ClassLoader\Loader::load()
+- Autoloader method needs to be set manually by your calling code.
+
+### version 1.2.0
+
+- Added setAutoloader() to API, allowing only ClassLoader\Loader public methods
+to be needed to setup autoloading.  No outside PHP function calls are necessary
+to get ClassLoader up and running.
