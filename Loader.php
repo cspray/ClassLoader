@@ -129,4 +129,12 @@ class Loader {
         return $this->namespaceMap;
     }
 
+    /**
+     * @return boolean
+     * @see http://www.php.net/spl_autoload_register
+     */
+    public function setAutoloader() {
+        return \spl_autoload_register(array($this, 'load'));
+    }
+
 }
