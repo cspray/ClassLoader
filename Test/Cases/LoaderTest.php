@@ -48,7 +48,14 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
         $expected['Again'] = \CLASSLOADER_ROOT . '/again';
         $actual = $ClassLoader->getRegisteredNamespaces();
         $this->assertSame($expected, $actual);
+    }
 
+    public function testSettingAutoloader() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $ClassLoader->setAutoloader();
+        $Controller = new \TestApp\Model\TestModel();
+        $this->assertInstanceOf('\\TestApp\\Model\\TestModel', $Controller);
     }
 
 }
