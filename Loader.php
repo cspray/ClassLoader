@@ -2,25 +2,44 @@
 
 /**
  * @file
- * @brief Holds a class used as the framework autoloader, converting a namespaced
- * class to an absolute directory.
+ * @brief An autoloading class that allows the user to register top level namespaces
+ * to a specific directory and autoloads classes belonging to that top level namespace.
+ *
+ * Copyright (c) 2012 Charles Sprayberry
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+ * of the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * @author Charles Sprayberry
+ * @license http://www.opensource.org/licenses/mit-license.php
  */
 
 namespace ClassLoader;
 
 /**
- * @brief Responsible for including namespaced framework and application classes,
- * assuming they abide to the rules set forth by the framework.
- *
- * @details
- * Will load any class belonging to a top-level namespace that is registered.  You
- * can register a namespace directory by passing the top-level namespace and the
- * complete path to the directory holding that namespace to registerNamespaceDirectory().
+ * @brief Allows for the registering and retrieval of top level namespaces, loading
+ * classes based on the directory registered for a top level namespace using a
+ * generated absolute path and intends to be compatible with PSR-0 autoloading
+ * conventions.
  */
 class Loader {
 
     /**
-     * @brief An array holding a top-level namespace as the key and the complete
+     * @brief Array holding a top-level namespace as the key and the complete
      * root path for that namespace as the value.
      *
      * @property $namespaceMap
@@ -61,12 +80,10 @@ class Loader {
     }
 
     /**
-     * @brief Will check to see if the \a $namespace has a directory mapped to it,
-     * if not we assume that it is in the app path.
+     * @brief Will check to see if the \a $namespace has a directory mapped to it.
      *
      * @param $namespace A top-level namespace that may exist in \a $namespaceMap
      * @return Directory for namespace if registered or null
-     * @see SprayFire.Core.Directory
      */
     protected function getDirectoryForTopLevelNamespace($namespace) {
         if (isset($namespace) && \array_key_exists($namespace, $this->namespaceMap)) {
@@ -95,7 +112,7 @@ class Loader {
      * <pre>
      * The class:
      *
-     * Top.Level.ClassName
+     * Top\Level\ClassName
      *
      * The directory for that class:
      *
@@ -107,7 +124,7 @@ class Loader {
      *
      * Thus when you attempt to instantiate the class like so:
      *
-     * $Class = new Top.Level.ClassName();
+     * $Class = new \Top\Level\ClassName();
      *
      * The class autoloader will convert the namespace to a directory and then
      * append that directory to the value stored by the 'Top' key.
