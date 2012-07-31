@@ -18,20 +18,24 @@ register the directories for your top-level namespaces and invoke ClassLoader\Lo
 Here's an example:
 
 ```php
+<?php
+
 $libs_dir = '/path/to/your/libs/directory/';
 include $libs_dir . 'ClassLoader/Loader.php';
 $Loader = new \ClassLoader\Loader();
 $Loader->registerNamespaceDirectory('YourNamespace', '/path/to/your/dir/holding/namespace');
 $Loader->setAutoloader();
 
-// BAM!  You're good to go with autoloading whatever new classes are needed by
-your scripts.
+// BAM!  You're good to go with autoloading whatever new classes are needed by your scripts.
 
+?>
 ```
 
 ## Public API
 
 ```php
+<?php
+
 /**
  * Sets a specific top level namespace to include files from a specific directory; all classes
  * autoloaded with the given $topLevelNamespace should be included from $dir.
@@ -56,6 +60,8 @@ load($className)
  * @return boolean
  */
 setAutoloader()
+
+?>
 ```
 
 ## Changelog
