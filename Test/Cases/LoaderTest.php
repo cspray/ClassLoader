@@ -58,4 +58,10 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\\TestApp\\Model\\TestModel', $Controller);
     }
 
+    public function testLoadingOldStyleNamespacedClass() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $this->assertTrue($ClassLoader->load('TestApp_Controller_Controller'), 'Did not load the old style "namespaced" class');
+    }
+
 }
