@@ -36,6 +36,7 @@ class Loader {
      * @return boolean
      */
     public function load($className) {
+        $className = \str_replace('_', '\\', $className);
         $namespace = $this->getTopLevelNamespace($className);
         $path = $this->getDirectoryForTopLevelNamespace($namespace);
         if (!isset($path)) {
