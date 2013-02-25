@@ -1,45 +1,28 @@
 <?php
 
 /**
- * @file
- * @brief An autoloading class that allows the user to register top level namespaces
+ * An autoloading class that allows the user to register top level namespaces
  * to a specific directory and autoloads classes belonging to that top level namespace.
- *
- * Copyright (c) 2012 Charles Sprayberry
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is furnished to do
- * so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * @author Charles Sprayberry
  * @license http://www.opensource.org/licenses/mit-license.php
+ * @version 1.2
  */
 
 namespace ClassLoader;
 
 /**
- * @brief Allows for the registering and retrieval of top level namespaces, loading
+ * Allows for the registering and retrieval of top level namespaces, loading
  * classes based on the directory registered for a top level namespace using a
  * generated absolute path and intends to be compatible with PSR-0 autoloading
  * conventions.
+ *
+ * @package ClassLoader
  */
 class Loader {
 
     /**
-     * @brief Array holding a top-level namespace as the key and the complete
+     * Array map holding a top-level namespace as the key and the complete
      * root path for that namespace as the value.
      *
      * @property $namespaceMap
@@ -47,9 +30,10 @@ class Loader {
     protected $namespaceMap = array();
 
     /**
-     * @brief Include the class based on the fully namespaced \a $className passed.
+     * Include the class based on the fully namespaced $className passed.
      *
-     * @param $className The namespaced class to load
+     * @param string $className
+     * @return boolean
      */
     public function load($className) {
         $namespace = $this->getTopLevelNamespace($className);
@@ -65,10 +49,10 @@ class Loader {
     }
 
     /**
-     * @brief Will return the top-level namespace for a class, given it has a namespace
+     * Return the top-level namespace for a class, given it has a namespace
      *
-     * @param $className Fully namespaced name of the class
-     * @return mixed
+     * @param string $className
+     * @return string|null
      */
     protected function getTopLevelNamespace($className) {
         $className = \ltrim($className, '\\ ');
@@ -80,10 +64,10 @@ class Loader {
     }
 
     /**
-     * @brief Will check to see if the \a $namespace has a directory mapped to it.
+     * Get the full directory path for the given $namespace or null if not registered.
      *
-     * @param $namespace A top-level namespace that may exist in \a $namespaceMap
-     * @return Directory for namespace if registered or null
+     * @param string $namespace
+     * @return string|null
      */
     protected function getDirectoryForTopLevelNamespace($namespace) {
         if (isset($namespace) && \array_key_exists($namespace, $this->namespaceMap)) {
@@ -93,20 +77,20 @@ class Loader {
     }
 
     /**
-     * @brief Converts the PHP namespace separator to the appropriate directory
-     * separator.
+     * Converts the PHP namespace separator to the appropriate directory separator.
      *
-     * @param $className Namespaced name of the class to load
-     * @return The complete path to the class
+     * @param string $className
+     * @return string
      */
     protected function convertNamespacedClassToFilePath($className) {
         return '/' . \str_replace('\\', '/', $className) . '.php';
     }
 
     /**
-     * @brief Allows access to set a given namespace to a given directory.
+     * Allows access to set classes in a given top level namespace to be loaded
+     * from a specific directory; the directory passed should be the full, absolute
+     * path with a
      *
-     * @details
      * The directory should be assigned in such a way that the following occurs:
      *
      * <pre>
@@ -118,9 +102,11 @@ class Loader {
      *
      * /install_path/app/Top/Level/ClassName.php
      *
-     * The proper key and value for this namspace and directory would look like:
+     * The proper call for this class and directory would be:
      *
-     * $namespaceMap['Top'] = '/install_path/app';
+     * <code>
+     * $ClassLoader->registerNamespaceDirectory('Top', '/install_path/app');
+     * </code>
      *
      * Thus when you attempt to instantiate the class like so:
      *
@@ -130,8 +116,8 @@ class Loader {
      * append that directory to the value stored by the 'Top' key.
      * </pre>
      *
-     * @param $topLevelNamespace A string representing a top level namespace
-     * @param $dir The complete path to the directory holding the top level namespace
+     * @param string $topLevelNamespace
+     * @param string $dir
      */
     public function registerNamespaceDirectory($topLevelNamespace, $dir) {
         if (!empty($topLevelNamespace) && !empty($dir)) {
@@ -140,7 +126,7 @@ class Loader {
     }
 
     /**
-     * @return An array of registered top level namespaces
+     * @return array
      */
     public function getRegisteredNamespaces() {
         return $this->namespaceMap;
