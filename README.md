@@ -61,10 +61,27 @@ load($className)
  */
 setAutoloader()
 
+/**
+ * @return boolean
+ */
+unsetAutoloader()
+
 ?>
 ```
 
 ## Changelog
+
+### version 1.3.0
+
+- Added unsetAutoloader to API
+- Added full support for PSR-0 standards
+
+### version 1.2.0
+
+- Added setAutoloader() to API, allowing only ClassLoader\Loader public methods
+to be needed to setup autoloading.  No outside PHP function calls are necessary
+to get ClassLoader up and running.
+
 
 ### version 1.0.0
 
@@ -72,8 +89,3 @@ setAutoloader()
 namespaces and loading a class via ClassLoader\Loader::load()
 - Autoloader method needs to be set manually by your calling code.
 
-### version 1.2.0
-
-- Added setAutoloader() to API, allowing only ClassLoader\Loader public methods
-to be needed to setup autoloading.  No outside PHP function calls are necessary
-to get ClassLoader up and running.
