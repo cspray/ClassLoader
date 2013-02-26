@@ -72,7 +72,7 @@ class Loader {
             $class = \substr($className, $lastNamespace + 1);
         }
 
-        return [$namespace, $class];
+        return array($namespace, $class);
     }
 
     /**
