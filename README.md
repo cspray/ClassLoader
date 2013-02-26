@@ -1,5 +1,7 @@
 # ClassLoader
 
+[![Build Status](https://travis-ci.org/cspray/ClassLoader.png?branch=1.3.0)](https://travis-ci.org/cspray/ClassLoader)
+
 A PHP 5.3 class-based autoloader designed to work exclusively with namespaces to
 easily autoload your favorite classes.  Originally ClassLoader was simply a part
 of [SprayFire](http://github.com/cspray/SprayFire) but the utility proved to be
