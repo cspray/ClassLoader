@@ -64,4 +64,10 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($ClassLoader->load('TestApp_Controller_Controller'), 'Did not load the old style "namespaced" class');
     }
 
+    public function testLoadingOldStyleAndNewStyleIntermingled() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $this->assertTrue($ClassLoader->load('\TestApp\With_Underscore\Subnamespace_Controller'), 'Could not load "fubar" class name.');
+    }
+
 }
