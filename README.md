@@ -1,5 +1,7 @@
 # ClassLoader
 
+[![Build Status](https://travis-ci.org/cspray/ClassLoader.png?branch=1.2.0)](https://travis-ci.org/cspray/ClassLoader)
+
 A PHP 5.3 class-based autoloader designed to work exclusively with namespaces to
 easily autoload your favorite classes.  Originally ClassLoader was simply a part
 of [SprayFire](http://github.com/cspray/SprayFire) but the utility proved to be
@@ -66,14 +68,15 @@ setAutoloader()
 
 ## Changelog
 
+### version 1.2.0
+
+- Added setAutoloader() to API, allowing only ClassLoader\Loader public methods
+to be needed to setup autoloading.  No outside PHP function calls are necessary
+to get ClassLoader up and running.
+
 ### version 1.0.0
 
 - Initial version, support for registering a top level namespace, getting registered
 namespaces and loading a class via ClassLoader\Loader::load()
 - Autoloader method needs to be set manually by your calling code.
 
-### version 1.2.0
-
-- Added setAutoloader() to API, allowing only ClassLoader\Loader public methods
-to be needed to setup autoloading.  No outside PHP function calls are necessary
-to get ClassLoader up and running.
