@@ -30,23 +30,49 @@ class Loader {
     protected $namespaceMap = array();
 
     /**
-     * Include the class based on the fully namespaced $className passed.
+     * Require the class based on the fully namespaced $className passed.
+     *
+     * This implementation is fully PSR-0 compliant and any class name fitting the
+     * standards will be loaded.
      *
      * @param string $className
      * @return boolean
      */
     public function load($className) {
-        $className = \str_replace('_', '\\', $className);
-        $namespace = $this->getTopLevelNamespace($className);
-        $path = $this->getDirectoryForTopLevelNamespace($namespace);
+        list($namespace, $class) = $this->getNamespaceAndClass($className);
+        $path = $this->convertToFilePath($namespace, $class);
         if (!isset($path)) {
             return false;
         }
-        $path .= $this->convertNamespacedClassToFilePath($className);
+
         if (\file_exists($path)) {
-            return (boolean) include $path;
+            return (boolean) require $path;
         }
         return false;
+    }
+
+    /**
+     * Returns a numerically indexed array listing the [$namespace, $class] for
+     * the passed $className; if the class does not have a namespace a blank string
+     * is returned for that value.
+     *
+     * The $namespace returned will have all trailing and leading slashes removed.
+     *
+     * @param $className
+     * @return array
+     */
+    protected function getNamespaceAndClass($className) {
+        $lastNamespace = \strrpos($className, '\\');
+        // we are not checking explicitly because if the last namespace is the
+        // first pos then it is in the global namespace and, effectively, isn't in one.
+        $namespace = '';
+        $class = $className;
+        if ($lastNamespace) {
+            $namespace = \trim(\substr($className, 0, $lastNamespace), '\\');
+            $class = \substr($className, $lastNamespace + 1);
+        }
+
+        return [$namespace, $class];
     }
 
     /**
@@ -80,11 +106,20 @@ class Loader {
     /**
      * Converts the PHP namespace separator to the appropriate directory separator.
      *
-     * @param string $className
+     * @param string $namespace
+     * @param string $class
      * @return string
      */
-    protected function convertNamespacedClassToFilePath($className) {
-        return '/' . \str_replace('\\', '/', $className) . '.php';
+    protected function convertToFilePath($namespace, $class) {
+        if (empty($namespace)) {
+            list($namespace, $class) = $this->getNamespaceAndClass(\str_replace('_', '\\', $class));
+        }
+
+        $topNamespace = $this->getTopLevelNamespace($namespace);
+        $path = $this->getDirectoryForTopLevelNamespace($topNamespace);
+        $path .= '/' . \str_replace('\\', '/', $namespace) . '/' . \str_replace('_', '/', $class) . '.php';
+
+        return $path;
     }
 
     /**
@@ -122,7 +157,7 @@ class Loader {
      */
     public function registerNamespaceDirectory($topLevelNamespace, $dir) {
         if (!empty($topLevelNamespace) && !empty($dir)) {
-            $this->namespaceMap[$topLevelNamespace] = $dir;
+            $this->namespaceMap[$topLevelNamespace] = (string) $dir;
         }
     }
 
@@ -139,6 +174,14 @@ class Loader {
      */
     public function setAutoloader() {
         return \spl_autoload_register(array($this, 'load'));
+    }
+
+    /**
+     * @return boolean
+     * @see http://www.php.net/spl_autoload_unregister
+     */
+    public function unsetAutoloader() {
+        return \spl_autoload_unregister(array($this, 'load'));
     }
 
 }
