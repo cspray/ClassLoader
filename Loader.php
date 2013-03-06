@@ -76,18 +76,18 @@ class Loader {
     }
 
     /**
-     * Return the top-level namespace for a class, given it has a namespace
+     * Return the top-level namespace for a namespace.
      *
-     * @param string $className
+     * @param string $namespace
      * @return string|null
      */
-    protected function getTopLevelNamespace($className) {
-        $className = \ltrim($className, '\\ ');
-        if (\strpos($className, '\\') !== false) {
-            $namespaces = \explode('\\', $className);
+    protected function getTopLevelNamespace($namespace) {
+        $namespace = \ltrim($namespace, '\\ ');
+        if (\strpos($namespace, '\\') !== false) {
+            $namespaces = \explode('\\', $namespace);
             return $namespaces[0];
         }
-        return null;
+        return $namespace;
     }
 
     /**
