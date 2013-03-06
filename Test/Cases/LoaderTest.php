@@ -70,4 +70,13 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($ClassLoader->load('\TestApp\With_Underscore\Subnamespace_Controller'), 'Could not load "fubar" class name.');
     }
 
+    /**
+     * @see https://github.com/cspray/ClassLoader/issues/4
+     */
+    public function testLoadingNamespacedClassWithOnlyOneSublevel() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $this->assertTrue($ClassLoader->load('\TestApp\Bootstrap'), 'Could not load the class one sublevel under top namespace');
+    }
+
 }
