@@ -1,0 +1,18 @@
+{
+    "name": "cspray/class-loader",
+    "description": "A PHP 5.3+ autoloading solution compliant with PSR-0 standards",
+    "keywords": ["autoloader"],
+    "homepage": "http://github.com/cspray/ClassLoader",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Charles Sprayberry",
+            "email": "cspray@gmail.com",
+            "homepage": "http://cspray.github.io",
+            "role": "Benevolent Dictator for Life"
+        }
+    ],
+    "require": {
+        "php": ">=5.3"
+    }
+}

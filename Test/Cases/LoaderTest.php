@@ -58,4 +58,25 @@ class LoaderTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\\TestApp\\Model\\TestModel', $Controller);
     }
 
+    public function testLoadingOldStyleNamespacedClass() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $this->assertTrue($ClassLoader->load('TestApp_Controller_Controller'), 'Did not load the old style "namespaced" class');
+    }
+
+    public function testLoadingOldStyleAndNewStyleIntermingled() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $this->assertTrue($ClassLoader->load('\TestApp\With_Underscore\Subnamespace_Controller'), 'Could not load "fubar" class name.');
+    }
+
+    /**
+     * @see https://github.com/cspray/ClassLoader/issues/4
+     */
+    public function testLoadingNamespacedClassWithOnlyOneSublevel() {
+        $ClassLoader = new \ClassLoader\Loader();
+        $ClassLoader->registerNamespaceDirectory('TestApp', \CLASSLOADER_ROOT);
+        $this->assertTrue($ClassLoader->load('\TestApp\Bootstrap'), 'Could not load the class one sublevel under top namespace');
+    }
+
 }
