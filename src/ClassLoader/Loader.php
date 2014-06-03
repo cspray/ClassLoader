@@ -46,7 +46,8 @@ class Loader {
         }
 
         if (\file_exists($path)) {
-            return (boolean) require $path;
+            require $path;
+            return true; 
         }
         return false;
     }
