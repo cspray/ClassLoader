@@ -1,5 +1,7 @@
 # ClassLoader
 
+> It is not reommended to use this library. Please use [Composer](https://getcomposer.org) to generate a PSR-compliant autoloader.
+
 [![Build Status](https://travis-ci.org/cspray/ClassLoader.png?branch=1.3.0)](https://travis-ci.org/cspray/ClassLoader)
 
 A PHP 5.3 class-based autoloader designed to work exclusively with namespaces to
